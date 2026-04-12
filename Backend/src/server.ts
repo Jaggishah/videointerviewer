@@ -1,28 +1,44 @@
 import 'module-alias/register';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import VARIABLES from '@lib/Variable';
+import { serve } from 'inngest/express';
+import VARIABLES from '@/lib/Variable';
+import connectDB from '@/lib/Db';
+import { inngest, functions } from '@/lib/Inngest';
+import path from 'path';
 
+const __dirname = path.resolve();
 const app = express();
 
-// Enable CORS for all routes
-app.use(cors());
+app.use(cors({origin: "*" , credentials: true}));
 
-// Parse JSON bodies
 app.use(express.json());
 
+
+app.use('/api/inngest', serve({ client: inngest, functions }));
 app.get('/', (req: Request, res: Response) => {
     res.status(200).json({ message: 'Hello, World!' });
 });
 
+if (VARIABLES.PRODUCTION === 'TRUE') {
+    app.use(express.static(path.join(__dirname, '../Frontend/dist')));
 
-
-function startServer(): void {
-    const PORT = VARIABLES.PORT;
-
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
+    app.get('*', (req: Request, res: Response) => {
+        res.sendFile(path.join(__dirname, '../Frontend/dist', 'index.html'));
     });
 }
 
+
+function startServer(): void {
+    try{
+    const PORT = VARIABLES.PORT;
+    connectDB();
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+    } catch (error) {
+        console.error('Error starting the server:', error);
+        
+    }
+}
 startServer();
