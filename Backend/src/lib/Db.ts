@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import VARIABLES from './Variable';
-import { copyFileSync } from 'node:fs';
+import VARIABLES from './Variable.js';
+
 
 const connectDB = async () => {
     try {

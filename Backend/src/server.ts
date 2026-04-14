@@ -1,10 +1,9 @@
-import 'module-alias/register';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { serve } from 'inngest/express';
-import VARIABLES from '@/lib/Variable';
-import connectDB from '@/lib/Db';
-import { inngest, functions } from '@/lib/Inngest';
+import VARIABLES from './lib/Variable.js';
+import connectDB from './lib/Db.js';
+import { inngest, functions } from './lib/Inngest.js';
 import path from 'path';
 
 const __dirname = path.resolve();

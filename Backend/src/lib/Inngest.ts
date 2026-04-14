@@ -1,5 +1,5 @@
 import { Inngest } from "inngest";
-import User from "@/Models/User";
+import User from "../Models/User.js";
 
 export const inngest = new Inngest({id : "videointerviewer"});
 
