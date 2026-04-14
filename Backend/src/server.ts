@@ -15,14 +15,11 @@ app.use(express.json());
 
 
 app.use('/api/inngest', serve({ client: inngest, functions }));
-app.get('/', (req: Request, res: Response) => {
-    res.status(200).json({ message: 'Hello, World!' });
-});
 
-if (VARIABLES.PRODUCTION === 'TRUE') {
+if (VARIABLES.isPRODUCTION) {
     app.use(express.static(path.join(__dirname, '../Frontend/dist')));
 
-    app.get('*', (req: Request, res: Response) => {
+    app.get('/{*path}', (req: Request, res: Response) => {
         res.sendFile(path.join(__dirname, '../Frontend/dist', 'index.html'));
     });
 }
