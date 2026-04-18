@@ -1,8 +1,8 @@
 import { Inngest } from "inngest";
 import User from "../Models/User.js";
+import { upsertStreamUser, deleteStreamUser } from "./Stream.js";
 
 export const inngest = new Inngest({id : "videointerviewer"});
-
 
 interface syncDataInterface {
     data: {
@@ -26,12 +26,17 @@ const syncUserToInngest = inngest.createFunction(
         const newUser = {
             clerkId: id,
             email: email_addresses[0].email_address,
-            name: `${first_name} ${last_name}`,
+            name: `${first_name} ${last_name || ""}`.trim(),
             profileImage: image_url,
         }
 
         try{
             await User.create(newUser);
+            await upsertStreamUser({ 
+                id: newUser.clerkId.toString(), 
+                name: newUser.name, 
+                image: newUser.profileImage 
+            });
         }catch(error){
             console.error('Error syncing user to database:', error);
         }
@@ -45,6 +50,7 @@ const deleteUserFromInngest = inngest.createFunction(
 
         try{
             await User.deleteOne({ clerkId: id });
+            await deleteStreamUser(id.toString());
         }catch(error){
             console.error('Error deleting user from database:', error);
         }
