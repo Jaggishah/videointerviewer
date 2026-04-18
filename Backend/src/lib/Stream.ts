@@ -11,7 +11,7 @@ interface StreamUserData {
     name: string;
     image: string;
 }
-const chatClient = StreamChat.getInstance(VARIABLES.STREAM_API_KEY, VARIABLES.STREAM_API_SECRET);
+export const chatClient = StreamChat.getInstance(VARIABLES.STREAM_API_KEY, VARIABLES.STREAM_API_SECRET);
 
 export const upsertStreamUser = async (userData : StreamUserData) => {
     try {

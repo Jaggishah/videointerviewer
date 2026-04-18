@@ -1,11 +1,15 @@
-import express, { Request, Response } from 'express';
+
 import cors from 'cors';
-import { serve } from 'inngest/express';
-import VARIABLES from './lib/Variable.js';
+import path from 'path';
 import connectDB from './lib/Db.js';
+import VARIABLES from './lib/Variable.js';
+
+import { serve } from 'inngest/express';
+import express, { Request, Response } from 'express';
 import { inngest, functions } from './lib/Inngest.js';
 import { clerkMiddleware } from '@clerk/express';
-import path from 'path';
+import chatRoutes from './Routes/chatRoutes.js';
+
 
 const __dirname = path.resolve();
 const app = express();
@@ -17,7 +21,7 @@ app.use(clerkMiddleware());
 
 
 app.use('/api/inngest', serve({ client: inngest, functions }));
-
+app.use("/api/chat", chatRoutes);
 
 
 if (VARIABLES.isPRODUCTION) {
