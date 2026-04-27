@@ -1,3 +1,4 @@
+import { StreamClient } from '@stream-io/node-sdk';
 import { StreamChat } from 'stream-chat';
 import VARIABLES from './Variable.js';
 
@@ -12,6 +13,7 @@ interface StreamUserData {
     image: string;
 }
 export const chatClient = StreamChat.getInstance(VARIABLES.STREAM_API_KEY, VARIABLES.STREAM_API_SECRET);
+export const streamClient = new StreamClient(VARIABLES.STREAM_API_KEY, VARIABLES.STREAM_API_SECRET);
 
 export const upsertStreamUser = async (userData : StreamUserData) => {
     try {

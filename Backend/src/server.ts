@@ -9,7 +9,7 @@ import express, { Request, Response } from 'express';
 import { inngest, functions } from './lib/Inngest.js';
 import { clerkMiddleware } from '@clerk/express';
 import chatRoutes from './Routes/chatRoutes.js';
-
+import sessionRoutes from './Routes/sessionRoute.js';
 
 const __dirname = path.resolve();
 const app = express();
@@ -22,6 +22,7 @@ app.use(clerkMiddleware());
 
 app.use('/api/inngest', serve({ client: inngest, functions }));
 app.use("/api/chat", chatRoutes);
+app.use("/api/sessions", sessionRoutes);
 
 
 if (VARIABLES.isPRODUCTION) {
